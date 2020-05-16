@@ -1,0 +1,11 @@
+{{ (user$ | async)?.id }}
+
+{{ game$ | async | json }}
+
+<app-dealer
+  *ngIf="(game$ | async)?.dealer?.id === (user$ | async)?.id"
+></app-dealer>
+
+<app-player
+  *ngIf="(game$ | async)?.dealer?.id !== (user$ | async)?.id"
+></app-player>

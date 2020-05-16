@@ -1,0 +1,24 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>{{ role }}</mat-card-title>
+    <mat-card-subtitle>{{ userAction }}</mat-card-subtitle>
+  </mat-card-header>
+</mat-card>
+
+<app-black-cards
+  [cardText]="blackCard"
+  [draw]="draw"
+  [pick]="pick"
+></app-black-cards>
+
+<mat-card *ngIf="playerCards">
+  <mat-card-header>
+    <mat-card-title>Other players cards</mat-card-title>
+  </mat-card-header>
+</mat-card>
+
+<app-white-cards
+  [cards]="playerCards"
+  [blackCard]="blackCard"
+  (selectedCard)="selectWinner($event)"
+></app-white-cards>

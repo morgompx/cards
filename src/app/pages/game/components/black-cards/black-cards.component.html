@@ -1,0 +1,11 @@
+<mat-card>
+  <mat-card-content>
+    <div class="black-card">
+      {{ getCardText() }}
+      <div class="options">
+        <div *ngIf="draw">Draw {{ draw }}</div>
+        <div *ngIf="pick">Pick {{ pick }}</div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

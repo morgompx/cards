@@ -1,0 +1,12 @@
+<mat-card>
+  <mat-card-content>
+    <a
+      mat-button
+      class="playing-card"
+      *ngFor="let card of cards"
+      (click)="selectCard(card)"
+    >
+      {{ displayWhiteCard(card) }}
+    </a>
+  </mat-card-content>
+</mat-card>

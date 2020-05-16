@@ -1,0 +1,23 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>{{ role }}</mat-card-title>
+    <mat-card-subtitle>{{ userAction }}</mat-card-subtitle>
+  </mat-card-header>
+</mat-card>
+
+<app-black-cards
+  [cardText]="blackCard"
+  [draw]="draw"
+  [pick]="pick"
+></app-black-cards>
+
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Your hand</mat-card-title>
+  </mat-card-header>
+</mat-card>
+
+<app-white-cards
+  [cards]="playerCards"
+  (selectedCard)="selectPlay($event)"
+></app-white-cards>
