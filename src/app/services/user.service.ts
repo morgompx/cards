@@ -10,13 +10,13 @@ import { PeeringService } from './peering.service';
 })
 export class UserService {
   private user: RxCacheItem<User>;
-  private user$;
+  private user$: Observable<User>;
 
   constructor(
     private readonly cache: RxCacheService,
     private readonly peeringService: PeeringService
   ) {
-    this.user = cache.get<User>({
+    this.user = this.cache.get<User>({
       id: 'user',
       construct: this.initUser,
       autoload: true,

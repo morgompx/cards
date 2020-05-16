@@ -4,7 +4,7 @@ import { BlackCard } from './black-card';
 import { WhiteCard } from './white-card';
 
 export interface Game {
-  host: Player;
+  hostId: string;
   players: Array<Player>;
   dealer?: Dealer;
   blackDeck: Array<BlackCard>;

@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { GameService } from '../../services/game.service';
 import { Game } from '../../models/game';
 import { Observable } from 'rxjs';
-import { UserService } from 'src/app/services/user.service';
-import { User } from 'src/app/models/user';
-import { tap } from 'rxjs/operators';
+import { tap, take } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-game',
@@ -12,16 +11,22 @@ import { tap } from 'rxjs/operators';
   styleUrls: ['./game.component.css'],
 })
 export class GameComponent implements OnInit {
-  game$: Observable<Game>;
-  user$: Observable<User>;
+  game$: Observable<Partial<Game>>;
 
   constructor(
     private readonly gameService: GameService,
-    private readonly userService: UserService
+    private readonly route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.game$ = this.gameService.get$();
-    this.user$ = this.userService.get$();
+    this.gameService
+      .initialize(
+        this.route.snapshot.paramMap.get('id')
+          ? this.route.snapshot.paramMap.get('id')
+          : null
+      )
+      .subscribe(() => {
+        this.game$ = this.gameService.get$();
+      });
   }
 }

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import Peer from 'peerjs';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { Game } from '../models/game';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -9,14 +8,16 @@ import { Game } from '../models/game';
 export class PeeringService {
   private peer: Peer;
   private peerId$: BehaviorSubject<string>;
+  private hostId$: BehaviorSubject<string>;
   private connections: Array<Peer.DataConnection>;
-  private data$: BehaviorSubject<Game>;
+  private data$: BehaviorSubject<any>;
 
   constructor() {
     this.peer = new Peer();
     this.peerId$ = new BehaviorSubject<string>(null);
+    this.hostId$ = new BehaviorSubject<string>(null);
     this.connections = [];
-    this.data$ = new BehaviorSubject<Game>(null);
+    this.data$ = new BehaviorSubject<any>(null);
 
     this.peer.on('open', (id) => {
       this.peerId$.next(id);
@@ -43,5 +44,15 @@ export class PeeringService {
 
   getId$ = () => this.peerId$.asObservable();
 
-  updateAll = (data) => {};
+  updateClients = (data) => {
+    this.data$.next(data);
+    for (const conn of this.connections) {
+      conn.send(data);
+    }
+  };
+
+  updateHost = (id, data) => {
+    this.data$.next(data);
+    this.connections.filter((conn) => conn.peer === id)[0].send(data);
+  };
 }
