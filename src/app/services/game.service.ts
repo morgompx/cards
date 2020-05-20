@@ -1,20 +1,10 @@
 import { Injectable } from '@angular/core';
-import { RxCacheService, RxCacheItem } from 'ngx-rxcache';
 import { Game } from '../models/game';
-import { of, Observable, forkJoin } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { BlackCard } from '../models/black-card';
 import { WhiteCard } from '../models/white-card';
-import { UserService } from './user.service';
-import { PeeringService } from './peering.service';
-import {
-  take,
-  switchMap,
-  takeUntil,
-  takeWhile,
-  skipWhile,
-  map,
-} from 'rxjs/operators';
+import { switchMap, skipWhile, map } from 'rxjs/operators';
 import { CacheService } from './cache.service';
 
 @Injectable({
@@ -35,15 +25,17 @@ export class GameService {
         return this.cache.getPeerId$().pipe(
           switchMap((peerId) => {
             return this.cache
-              .initialize({
-                hostId: hostId ? hostId : peerId,
-                players: [],
-                dealer: null,
-                blackDeck,
-                blackDiscard: [],
-                whiteDeck,
-                whiteDiscard: [],
-              })
+              .initialize(
+                {
+                  players: [],
+                  dealer: null,
+                  blackDeck,
+                  blackDiscard: [],
+                  whiteDeck,
+                  whiteDiscard: [],
+                },
+                hostId ? hostId : null
+              )
               .pipe(
                 skipWhile((isInitialized) => !isInitialized),
                 map(() => true)
